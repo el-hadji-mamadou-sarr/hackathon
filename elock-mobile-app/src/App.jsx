@@ -7,14 +7,14 @@ import { Failed } from './components/Failed';
 const App = () => {
   const [valid, setValid] = useState(null)
 
-  const validateHash = (hash)=>{
+  const validateHash = (user_uid)=>{
     const URL = "https://b8d6-37-174-67-44.ngrok-free.app/api"
     fetch(URL + '/validateHash', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ hash: hash }),
+      body: JSON.stringify({ user_uid: user_uid }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -28,8 +28,8 @@ const App = () => {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const hash = url.pathname.split('/').pop();
-    validateHash(hash);
+    const user_uid = url.pathname.split('/').pop();
+    validateHash(user_uid);
   }, []);
 
   return (

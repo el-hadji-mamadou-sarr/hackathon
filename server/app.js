@@ -52,8 +52,7 @@ app.post('/createToken', async (req, res) => {
 
     const payload = { user_uid };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
-
-
+    
     try {
         console.log('Creating new token for user_uid:', user_uid);
         const newToken = new Token({ user_uid: user_uid, token: token });
