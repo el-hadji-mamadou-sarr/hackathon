@@ -8,7 +8,7 @@ const App = () => {
   const [valid, setValid] = useState(null)
 
   const validateHash = (hash)=>{
-    const URL = "http://localhost:7000"
+    const URL = "https://b8d6-37-174-67-44.ngrok-free.app/api"
     fetch(URL + '/validateHash', {
       method: 'POST',
       headers: {
