@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const port = 7000
 const cors = require('cors')
+const jwt = require('jsonwebtoken');
+
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +28,7 @@ db.once('open', (error) => console.log('connected to database'))
 
 const TokenSchema = new mongoose.Schema({
     user_uid: String,
-    hash: String,
+    token: String,
 });
 
 
@@ -49,16 +51,27 @@ app.post('/validateHash', async (req, res) => {
 });
 
 const SECRET_KEY = process.env.SECRET_KEY;
-app.post('/createToken', (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        return res.status(400).json({ error: 'Name is required' });
+
+app.post('/createToken', async (req, res) => {
+    const { user_uid } = req.body;
+    if (!user_uid) {
+        return res.status(400).json({ error: 'user_uid is required' });
     }
 
-    const payload = { name };
+    const payload = { user_uid };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
-    res.json({ token });
+
+    try {
+        const newToken = new Token({ user_uid, hash: token });
+        await newToken.save();
+
+        res.json({ token });
+    } catch (error) {
+        console.error('Error saving token:', error);
+        res.status(500).json({ error: 'Error saving token' });
+    }
 });
+
 
 
 app.listen(port, () => {
