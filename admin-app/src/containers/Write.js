@@ -1,4 +1,7 @@
-export const Write = () => {
+import React from 'react';
+import Writer from '../components/Writer/Writer';
+
+const Write = () => {
     const onWrite = async(message) => {
         try {
             const ndef = new window.NDEFReader();
@@ -15,3 +18,5 @@ export const Write = () => {
       <Writer writeFn={onWrite}/>
     );
 };
+
+export default Write;
