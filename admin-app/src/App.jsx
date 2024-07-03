@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Writer from './components/Writer'
 
 function App() {
   const [user_uid, setUserUid] = useState("")
@@ -41,13 +42,20 @@ function App() {
       console.log("Write failed :-( try again.");
     };
   }
+  const onWrite = async(url) => {
+        try {
+            const ndef = new window.NDEFReader();
+            // This line will avoid showing the native NFC UI reader
+            await ndef.scan();
+            await ndef.write({records: [{ recordType: "url", data: url }]});
+            alert(`Value Saved!`);
+        } catch (error) {
+            console.log(error);
+        }
+    }
   return (
     <>
-    <form>
-      <label htmlFor="">Insert uid of user</label>
-      <input type="text" id="name" name='name' value={user_uid} onChange={(e)=>setUserUid(e.target.value)}/>
-      <button type='button' onClick={submitForm}>Create token</button>
-    </form>
+    <Writer writeFn={onWrite}/>
     </>
   )
 }
