@@ -7,6 +7,7 @@ const Writer = ({ writeFn }) => {
   const [email, setEmail] = React.useState("");
   const [locker_number, setLockerNumber] = useState(null);
   const onSave = (user_uid) => {
+    console.log(user_uid);
     writeFn(user_uid);
   };
 
