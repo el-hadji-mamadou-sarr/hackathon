@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Connected } from "./components/Connected";
 import { Failed } from "./components/Failed";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 function App() {
   const [valid, setValid] = useState(null);
-  const { userUID } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const user_uid = searchParams.get("userUID");
   const validateHash = (user_uid) => {
     const URL = import.meta.env.VITE_SERVER_URL;
     fetch(URL + "/api/validateHash", {
@@ -26,8 +28,7 @@ function App() {
   };
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const user_uid = url.pathname.split("/").pop();
+    console.log("user_uid", user_uid);
     validateHash(user_uid);
   }, []);
 

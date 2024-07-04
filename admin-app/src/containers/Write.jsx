@@ -11,7 +11,7 @@ const Write = () => {
         records: [
           {
             recordType: "url",
-            data: import.meta.env.VITE_MOBILE_URL + "/" + message,
+            data: import.meta.env.VITE_MOBILE_URL + "/?userUID=" + message,
           },
         ],
       });
