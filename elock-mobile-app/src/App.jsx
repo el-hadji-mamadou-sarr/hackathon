@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Connected } from "./components/Connected";
 import { Failed } from "./components/Failed";
+import { useParams } from "react-router-dom";
 
 function App() {
   const [valid, setValid] = useState(null);
-
+  const { userUID } = useParams();
   const validateHash = (user_uid) => {
     const URL = import.meta.env.VITE_SERVER_URL;
     fetch(URL + "/api/validateHash", {
