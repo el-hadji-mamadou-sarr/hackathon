@@ -11,7 +11,9 @@ const Writer = ({ writeFn }) => {
   };
 
   const submitForm = (e) => {
+    e.preventDefault();
     const URL = import.meta.env.VITE_SERVER_URL;
+    console.log(URL);
     fetch(URL + "/api/createToken", {
       method: "POST",
       headers: {
