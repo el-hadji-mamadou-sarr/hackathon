@@ -1,22 +1,27 @@
-import React from 'react';
-import Writer from '../components/Writer/Writer';
+import React from "react";
+import Writer from "../components/Writer/Writer";
 
 const Write = () => {
-    const onWrite = async(message) => {
-        try {
-            const ndef = new window.NDEFReader();
-            // This line will avoid showing the native NFC UI reader
-            await ndef.scan();
-            await ndef.write({records: [{ recordType: "url", data: "http://localhost:7000/"+message }]});
-            alert(`Value Saved!`);
-        } catch (error) {
-            console.log(error);
-        }
+  const onWrite = async (message) => {
+    try {
+      const ndef = new window.NDEFReader();
+      // This line will avoid showing the native NFC UI reader
+      await ndef.scan();
+      await ndef.write({
+        records: [
+          {
+            recordType: "url",
+            data: import.meta.env.VITE_MOBILE_URL + "/" + message,
+          },
+        ],
+      });
+      alert(`Value Saved!`);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    return (
-      <Writer writeFn={onWrite}/>
-    );
+  return <Writer writeFn={onWrite} />;
 };
 
 export default Write;

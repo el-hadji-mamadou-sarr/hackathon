@@ -1,20 +1,95 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import lockerClose from "./assets/locker/locker-close.png";
 import lockerOpen from "./assets/locker/locker-open.png";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { Dropdown } from "./components/Dropdown";
 
 function App() {
-  return (
-    <div className="flex justify-center items-center">
-      <img src={lockerClose} alt="locker close" />
+  const [lockers, setLockers] = useState([0, 0, 0, 0, 0, 0]);
+  const [selected, setSelected] = useState(null);
+  const [scanning, setScanning] = useState(false);
+  const [authenticated, setAuthenticated] = useState({
+    locker_number: null,
+    authenticated: false,
+  });
 
-      <img src={lockerClose} alt="locker close" />
-      <img src={lockerClose} alt="locker close" />
-      <img src={lockerOpen} alt="locker close" />
-      <img src={lockerClose} alt="locker close" />
-      <img src={lockerClose} alt="locker close" />
+  const scan = (locker_number) => {
+    setScanning(true);
+    console.log("scanning locker number", locker_number);
+    const URL = import.meta.env.VITE_SERVER_URL;
+    fetch(URL + "/scan", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ locker_number }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "authenticated") {
+          setAuthenticated({
+            locker_number: locker_number,
+            authenticated: true,
+          });
+          setScanning(false);
+          openLocker(locker_number); // Open the locker upon successful authentication
+        }
+      })
+      .catch((error) => {
+        setAuthenticated({
+          locker_number: locker_number,
+          authenticated: false,
+        });
+        console.error("Error:", error);
+      });
+  };
+
+  const openLocker = (locker_number) => {
+    if (lockers[locker_number - 1] === 1) {
+      console.log("locker already open");
+    } else {
+      const newLockers = [...lockers];
+      newLockers[locker_number - 1] = 1;
+      setLockers(newLockers);
+    }
+    console.log(lockers);
+  };
+
+  const closeLocker = (locker_number) => {
+    if (lockers[locker_number - 1] === 0) {
+      console.log("locker already closed");
+    } else {
+      const newLockers = [...lockers];
+      newLockers[locker_number - 1] = 0;
+      setLockers(newLockers);
+    }
+    console.log(lockers);
+  };
+  return (
+    <div className="flex justify-center items-center ">
+      {lockers.map((locker, index) => (
+        <div key={index} className="relative hover:cursor-pointer dropdown">
+          <img
+            src={locker === 0 ? lockerClose : lockerOpen}
+            alt={`locker ${index + 1}`}
+          />
+          <span className="absolute top-20 font-semibold">{index + 1}</span>
+          <Dropdown
+            scan={scan}
+            locker_number={index + 1}
+            authenticated={authenticated}
+            openLocker={openLocker}
+            closeLocker={closeLocker}
+          />
+        </div>
+      ))}
+      {scanning && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Scanning...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
