@@ -12,6 +12,11 @@ function App() {
     locker_number: null,
     authenticated: false,
   });
+  const [audio] = useState(new Audio("./assets/locker-open.mp3")); // Initialize the audio element
+
+  const playSound = () => {
+    audio.play(); // Play the audio
+  };
 
   const scan = (locker_number) => {
     setScanning(true);
@@ -32,6 +37,7 @@ function App() {
             authenticated: true,
           });
           setScanning(false);
+          playSound();
           openLocker(locker_number); // Open the locker upon successful authentication
         }
       })
@@ -47,6 +53,7 @@ function App() {
       const newLockers = [...lockers];
       newLockers[locker_number - 1] = 1;
       setLockers(newLockers);
+      playSound();
     }
     console.log(lockers);
   };
