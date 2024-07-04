@@ -95,7 +95,16 @@ app.post('/scan', async (req, res) => {
     }
 });
 
-
+app.post('/lockLocker', async (req, res) => {
+    try {
+        const locker_number = req.body.locker_number;
+        const locker = await Locker.findOne({ locker_number: locker_number });
+        await Token.updateOne({ user_uid: locker.user_uid }, { token: '' });
+        res.json({ message: "ok" });
+    } catch (err) {
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 // Start the server
 app.listen(port, () => {

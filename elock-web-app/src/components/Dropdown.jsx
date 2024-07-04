@@ -4,6 +4,7 @@ export const Dropdown = ({
   authenticated,
   openLocker,
   closeLocker,
+  lockLocker,
 }) => {
   return (
     <div className="top-48 dropdown-content ">
@@ -13,7 +14,7 @@ export const Dropdown = ({
         <>
           <button onClick={() => openLocker(locker_number)}>open</button>
           <button onClick={() => closeLocker(locker_number)}>close</button>
-          <button>lock</button>
+          <button onClick={() => lockLocker(locker_number)}>lock</button>
         </>
       )}
     </div>

@@ -36,10 +36,6 @@ function App() {
         }
       })
       .catch((error) => {
-        setAuthenticated({
-          locker_number: locker_number,
-          authenticated: false,
-        });
         console.error("Error:", error);
       });
   };
@@ -65,6 +61,33 @@ function App() {
     }
     console.log(lockers);
   };
+  const lockLocker = (locker_number) => {
+    if (authenticated.locker_number != locker_number) {
+      console.log("locker already locked");
+    } else {
+      const URL = import.meta.env.VITE_SERVER_URL;
+      fetch(URL + "/lockLocker", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ locker_number }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message === "ok") {
+            closeLocker(locker_number); // Open the locker upon successful authentication
+            setAuthenticated({
+              locker_number: null,
+              authenticated: false,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  };
   return (
     <div className="flex justify-center items-center ">
       {lockers.map((locker, index) => (
@@ -80,6 +103,7 @@ function App() {
             authenticated={authenticated}
             openLocker={openLocker}
             closeLocker={closeLocker}
+            lockLocker={lockLocker}
           />
         </div>
       ))}

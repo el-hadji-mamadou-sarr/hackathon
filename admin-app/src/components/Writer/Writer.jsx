@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Writer.css";
 
 const Writer = ({ writeFn }) => {
-  const [user_uid, setUserUid] = React.useState("");
   const [first_name, setFirstName] = React.useState("");
   const [last_name, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -39,27 +38,36 @@ const Writer = ({ writeFn }) => {
     <>
       <form onSubmit={submitForm}>
         <div className="writer-container">
-          <label htmlFor="">First Name</label>
+          <label className="label" htmlFor="">
+            First Name
+          </label>
           <input
             type="text"
             placeholder="Enter First Name..."
             value={first_name}
             onChange={(e) => setFirstName(e.target.value)}
           ></input>
-          <label htmlFor="">Last Name</label>
+          <label className="label" htmlFor="">
+            Last Name
+          </label>
           <input
             type="text"
             placeholder="Enter Last Name..."
             value={last_name}
             onChange={(e) => setLastName(e.target.value)}
           ></input>
-          <label htmlFor="">Email</label>
+          <label className="label" htmlFor="">
+            Email
+          </label>
           <input
             type="text"
             placeholder="Enter Email..."
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
+          <label className="label" htmlFor="">
+            Locker number
+          </label>
           <input
             type="number"
             placeholder="Enter Locker number..."
