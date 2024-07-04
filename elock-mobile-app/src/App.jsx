@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Connected } from "./components/Connected";
 import { Failed } from "./components/Failed";
 
-const App = () => {
+function App() {
   const [valid, setValid] = useState(null);
 
   const validateHash = (user_uid) => {
@@ -37,6 +37,6 @@ const App = () => {
       {valid === false && <Failed />}
     </div>
   );
-};
+}
 
 export default App;
