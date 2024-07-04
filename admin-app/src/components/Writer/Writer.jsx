@@ -15,6 +15,7 @@ const Writer = ({ writeFn }) => {
     const URL = import.meta.env.VITE_SERVER_URL;
     console.log(URL);
     fetch(URL + "/api/createToken", {
+      mode: "no-cors",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
